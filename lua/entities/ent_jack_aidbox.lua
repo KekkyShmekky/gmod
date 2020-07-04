@@ -36,6 +36,14 @@ if SERVER then
             self:GetPhysicsObject():SetDragCoefficient(40*JMOD_CONFIG.RadioSpecs.ParachuteDragMult)
             self:GetPhysicsObject():SetAngleDragCoefficient(40)
         end
+        
+        local function FindMe (ent)
+         EmitSound( Sound("buttons/blip1.wav"), self:GetPos(), 1, CHAN_AUTO, 1, 60, 0, 100 )
+        end
+        
+        local function TimeMe ()
+            timer.Create( "BoxTimer", 3, 0, function() FindMe() end )
+        end
     end
 
     function ENT:PhysicsCollide(data,physobj)
@@ -130,6 +138,7 @@ if SERVER then
             sound.Play("snd_jack_itemsget.wav",Pos,75,100)
         end)
         self:Remove()
+        timer.Remove( "BoxTimer" )
     end
 
     function ENT:MakeSide(pos,ang,dir)
